@@ -1,0 +1,11 @@
+//<crt>CRTPLACEHOLDER<\/crt>/
+                }
+                N
+                /<prv>.*<\/prv>/{
+                s//<prv>KEYPLACEHOLDER<\/prv>/
+                P
+                D
+                }
+
+}
+
