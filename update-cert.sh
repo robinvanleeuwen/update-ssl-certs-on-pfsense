@@ -28,7 +28,5 @@ ENKEY=`$PHP -r '$key = file_get_contents( $argv[1] , true);  echo base64_encode(
 
 cat "$PWD/pattern.template" | awk '$1=$1' FS="CRTPLACEHOLDER" OFS="$ENCRT"  | awk '$1=$1' FS="KEYPLACEHOLDER" OFS="$ENKEY" | awk '$1=$1' FS="DOMAINPLACEHOLDER" OFS="$1" > /tmp/pattern.sub
 
-cat /tmp/pattern.sub
-
 cp /conf/config.xml /tmp/config.xml && sed -f /tmp/pattern.sub < /tmp/config.xml > /conf/config.xml && rm /tmp/config.cache && /etc/rc.restart_webgui
 
