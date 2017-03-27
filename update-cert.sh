@@ -50,8 +50,7 @@ else
 fi
 
 
-if [[ $DOMAINCONFIGXML == 1 ]] && [[ $DOMAINALREADYUPTODATE == 1 ]]; then
-    echo "BANAAN"
+if [[ $DOMAININCONFIGXML == 1 ]] && [[ $DOMAINALREADYUPTODATE == 0 ]]; then
     echo "+ Replacing pattern.sub in conig.xml and reloading webGUI"
     cp /conf/config.xml /tmp/config.xml && sed -f /tmp/pattern.sub < /tmp/config.xml > /conf/config.xml && rm /tmp/config.cache && /etc/rc.restart_webgui
 fi
