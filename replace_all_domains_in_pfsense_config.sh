@@ -1,7 +1,5 @@
 #!/usr/local/bin/bash
 
-OPENSSL=`which openssl`
-
 source /usr/local/etc/dehydrated/config
 
 for i in `cat $DOMAINS_TXT`;do 

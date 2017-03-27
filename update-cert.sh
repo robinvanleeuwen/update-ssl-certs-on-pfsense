@@ -42,17 +42,26 @@ else
     DOMAININCONFIGXML=0
 fi
 
-
-
-if grep $ENCRT /conf/config.xml > /dev/null; then
-	echo "+ Certficate already in config.xml"
+if grep "$ENCRT" /conf/config.xml > /dev/null; then
+    echo "+ Certficate already in config.xml"
+    DOMAINALREADYUPTODATE=1
 else
-        if [[ $DOMAININCONFIGXML == 1 ]]; then
-		echo "+ Replacing pattern.sub in conig.xml and reloading webGUI"
-		cp /conf/config.xml /tmp/config.xml && sed -f /tmp/pattern.sub < /tmp/config.xml > /conf/config.xml && rm /tmp/config.cache && /etc/rc.restart_webgui	
-	else
-		echo "!!! Not replacing domain, since it's not in your config.xml"
-	fi
+    DOMAINALREADYUPTODATE=0
+fi
+
+
+if [[ $DOMAINCONFIGXML == 1 ]] && [[ $DOMAINALREADYUPTODATE == 1 ]]; then
+    echo "BANAAN"
+    echo "+ Replacing pattern.sub in conig.xml and reloading webGUI"
+    cp /conf/config.xml /tmp/config.xml && sed -f /tmp/pattern.sub < /tmp/config.xml > /conf/config.xml && rm /tmp/config.cache && /etc/rc.restart_webgui
+fi
+
+if [[ $DOMAINCONFIGXML == 0 ]]; then
+    echo "!!! Not replacing domain, since it's not in your config.xml"
+fi
+
+if [[ $DOMAINALREADYUPTODATE == 0 ]]; then
+    echo "+ Skipping domain"
 fi
 
 echo "+ Done"
