@@ -8,3 +8,5 @@ for i in `cat $DOMAINS_TXT`;do
 	
 done
 
+echo "Restarting HA-Proxy"
+/usr/local/etc/rc.d/haproxy.sh restart

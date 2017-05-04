@@ -28,13 +28,14 @@ echo "+ Base64Enconding certificate files..."
 ENCRT=`$PHP -r '$cert = file_get_contents( $argv[1] , true);  echo base64_encode("$cert");' $CRT`
 ENKEY=`$PHP -r '$key = file_get_contents( $argv[1] , true);  echo base64_encode("$key");' $KEY`
 
+
 # replace the placeholder string in the pattern template with certificate encoded information.
 # redirect it out to the sub file so it can be scp to the pfsense server
 
 echo "+ Creating pattern.sub file for replacement in config.xml"
-cat "$PWD/pattern.template" | awk '$1=$1' FS="CRTPLACEHOLDER" OFS="$ENCRT"  | awk '$1=$1' FS="KEYPLACEHOLDER" OFS="$ENKEY" | awk '$1=$1' FS="DOMAINPLACEHOLDER" OFS="$1" > /tmp/pattern.sub
+cat "/opt/update-ssl-certs-on-pfsense/pattern.template" | awk '$1=$1' FS="CRTPLACEHOLDER" OFS="$ENCRT"  | awk '$1=$1' FS="KEYPLACEHOLDER" OFS="$ENKEY" | awk '$1=$1' FS="DOMAINPLACEHOLDER" OFS="$1" > /tmp/pattern.sub
 
-if grep "sslcertificate-$1" /conf/config.xml > /dev/null; then
+if grep -q "sslcertificate-$1" /conf/config.xml > /dev/null; then
     echo "+ Check: sslcertificate-$1 found in config.xml"
     DOMAININCONFIGXML=1
 else
@@ -42,10 +43,11 @@ else
     DOMAININCONFIGXML=0
 fi
 
-if grep "$ENCRT" /conf/config.xml > /dev/null; then
+if grep -q "$ENCRT" /conf/config.xml > /dev/null; then
     echo "+ Certficate already in config.xml"
     DOMAINALREADYUPTODATE=1
 else
+    echo "+ Certificate not up to date in config.xml"
     DOMAINALREADYUPTODATE=0
 fi
 
