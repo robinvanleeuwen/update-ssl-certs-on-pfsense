@@ -1,5 +1,9 @@
 #!/usr/local/bin/bash
 
+# For all domains in /opt/dehydrated/domains.txt update the
+# certificate if neccesary and reload HA Proxy
+
+
 source /usr/local/etc/dehydrated/config
 
 for i in `cat $DOMAINS_TXT`;do 
